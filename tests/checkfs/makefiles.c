@@ -26,7 +26,7 @@ The files are opened in the current dir.
 */
 #include <sys/types.h>
 #include <sys/stat.h>
-#include <endian.h>
+#include <machine/endian.h>
 #include <fcntl.h>
 #include <stdio.h>
 #include <stdlib.h>

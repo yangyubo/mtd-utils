@@ -9,8 +9,8 @@
 
 /* This file is blessed for inclusion by userspace */
 #include <linux/jffs2.h>
-#include <endian.h>
-#include <byteswap.h>
+#include <machine/endian.h>
+// #include <byteswap.h>
 
 #undef cpu_to_je16
 #undef cpu_to_je32

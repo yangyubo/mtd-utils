@@ -43,7 +43,7 @@
 #include <asm/types.h>
 #include <dirent.h>
 #include <mtd/jffs2-user.h>
-#include <endian.h>
+#include <machine/endian.h>
 #include <byteswap.h>
 #include <getopt.h>
 #include <crc32.h>

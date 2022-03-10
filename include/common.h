@@ -26,10 +26,23 @@
 #include <string.h>
 #include <fcntl.h>
 #include <errno.h>
-#include <features.h>
 #include <inttypes.h>
 #include <unistd.h>
-#include <sys/sysmacros.h>
+#include <machine/endian.h>
+#define __LITTLE_ENDIAN LITTLE_ENDIAN
+// #include <sys/sysmacros.h>
+
+#if defined(__APPLE__)
+// Mac OS X / Darwin features
+#include <libkern/OSByteOrder.h>
+#define bswap_16(x) OSSwapInt16(x)
+#define bswap_32(x) OSSwapInt32(x)
+#define bswap_64(x) OSSwapInt64(x)
+#endif
+
+#ifndef IPV6_ADD_MEMBERSHIP
+#define IPV6_ADD_MEMBERSHIP IPV6_JOIN_GROUP
+#endif
 
 #include "config.h"
 

@@ -1503,6 +1503,7 @@ static int add_inode(struct stat *st, ino_t inum, void *data,
 
 	if (c->default_compr != UBIFS_COMPR_NONE)
 		use_flags |= UBIFS_COMPR_FL;
+#ifndef NO_NATIVE_SUPPORT
 	if (flags & FS_COMPR_FL)
 		use_flags |= UBIFS_COMPR_FL;
 	if (flags & FS_SYNC_FL)
@@ -1515,6 +1516,7 @@ static int add_inode(struct stat *st, ino_t inum, void *data,
 		use_flags |= UBIFS_DIRSYNC_FL;
 	if (fctx)
 		use_flags |= UBIFS_CRYPT_FL;
+#endif
 	memset(ino, 0, UBIFS_INO_NODE_SZ);
 
 	ino_key_init(&key, inum);
@@ -1600,7 +1602,9 @@ static int add_dir_inode(const char *path_name, DIR *dir, ino_t inum, loff_t siz
 		fd = dirfd(dir);
 		if (fd == -1)
 			return sys_err_msg("dirfd failed");
+#ifndef NO_NATIVE_SUPPORT
 		if (ioctl(fd, FS_IOC_GETFLAGS, &flags) == -1)
+#endif
 			flags = 0;
 	}
 
@@ -1811,6 +1815,7 @@ static int add_file(const char *path_name, struct stat *st, ino_t inum,
 		dn->ch.node_type = UBIFS_DATA_NODE;
 		key_write(&key, &dn->key);
 		out_len = NODE_BUFFER_SIZE - UBIFS_DATA_NODE_SZ;
+#ifndef NO_NATIVE_SUPPORT
 		if (c->default_compr == UBIFS_COMPR_NONE &&
 		    !c->encrypted && (flags & FS_COMPR_FL))
 #ifdef WITHOUT_LZO
@@ -1819,6 +1824,7 @@ static int add_file(const char *path_name, struct stat *st, ino_t inum,
 			use_compr = UBIFS_COMPR_LZO;
 #endif
 		else
+#endif
 			use_compr = c->default_compr;
 		compr_type = compress_data(buf, bytes_read, &dn->data,
 					   &out_len, use_compr);
@@ -1876,7 +1882,9 @@ static int add_non_dir(const char *path_name, ino_t *inum, unsigned int nlink,
 		if (fd == -1)
 			return sys_err_msg("failed to open file '%s'",
 					   path_name);
+#ifndef NO_NATIVE_SUPPORT
 		if (ioctl(fd, FS_IOC_GETFLAGS, &flags) == -1)
+#endif
 			flags = 0;
 		if (close(fd) == -1)
 			return sys_err_msg("failed to close file '%s'",

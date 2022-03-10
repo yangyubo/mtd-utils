@@ -29,10 +29,20 @@
 #include <limits.h>
 #include <string.h>
 #include <stdint.h>
-#include <endian.h>
-#include <byteswap.h>
+#include <machine/endian.h>
+// #include <byteswap.h>
 #include <linux/types.h>
+#ifdef __linux__
 #include <linux/fs.h>
+# if defined(__x86_64__) && defined(__ILP32__)
+#  define llseek lseek64
+# endif
+#else
+# ifndef O_LARGEFILE
+#  define O_LARGEFILE 0
+# endif
+# define llseek lseek
+#endif
 
 #include <getopt.h>
 #include <sys/types.h>

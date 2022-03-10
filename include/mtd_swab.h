@@ -1,7 +1,7 @@
 #ifndef MTD_SWAB_H
 #define MTD_SWAB_H
 
-#include <endian.h>
+#include <machine/endian.h>
 
 #define swab16(x) \
         ((uint16_t)( \
