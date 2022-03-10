@@ -55,6 +55,7 @@
 #include <ctype.h>
 #include <uuid.h>
 #include <sys/file.h>
+#include <time.h>
 
 #ifdef WITH_CRYPTO
 #include <openssl/rand.h>
